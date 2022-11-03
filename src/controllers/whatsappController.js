@@ -1,6 +1,7 @@
-const fs= require("fs");
+const fs = require("fs");
 const myConsole = new console.Console(fs.createWriteStream("./logs.txt"));
 const whatsappService = require("../services/whatsappService");
+const samples = require("../shared/sampleModels");
 
 const VerifyToken = (req, res) => {
   try {
@@ -20,21 +21,58 @@ const VerifyToken = (req, res) => {
 
 const ReceivedMessage = (req, res) => {
   try {
-    var entry= (req.body["entry"])[0];
-    var changes= (entry["changes"])[0];
-    var value=  changes["value"];
-    var messageObject =  value["messages"];
-    if(typeof messageObject != "undefined"){
+    var entry = (req.body["entry"])[0];
+    var changes = (entry["changes"])[0];
+    var value = changes["value"];
+    var messageObject = value["messages"];
+    if (typeof messageObject != "undefined") {
 
       var messages = messageObject[0];
       var number = messages["from"];
-      var text= GetTextUser(messages);
+      var text = GetTextUser(messages);
       myConsole.log(text);
-      whatsappService.sendMessageWhatsApp("el usuario dijo: " + text, number);
+
+      if (text == "text") {
+        var data = samples.sampleText("hola usuario: ", number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else if (text == "image") {
+        var data = samples.sampleImage(number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else if (text == "video") {
+        var data = samples.sampleVideo(number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else if (text == "audio") {
+        var data = samples.sampleAudio(number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else if (text == "document") {
+        var data = samples.sampleDocument(number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else if (text == "button") {
+        var data = samples.sampleButtons(number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else if (text == "list") {
+        var data = samples.sampleList(number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else if (text == "location") {
+        var data = samples.sampleLocation(number);
+        whatsappService.sendMessageWhatsApp(data);
+      }
+      else {
+        var data = samples.sampleText(" No entiendo: ", number);
+        whatsappService.sendMessageWhatsApp(data);
+
+      }
     }
 
     res.send("EVENT_RECEIVED");
-    
+
   } catch (e) {
     myConsole.log(e);
     res.send("EVENT_RECEIVED");
@@ -42,31 +80,31 @@ const ReceivedMessage = (req, res) => {
 
 };
 
-function GetTextUser(messages){
-  var text ="";
-  var typeMessage =  messages["type"];
-  if(typeMessage == "text"){
-    text= (messages["text"])["body"];
+function GetTextUser(messages) {
+  var text = "";
+  var typeMessage = messages["type"];
+  if (typeMessage == "text") {
+    text = (messages["text"])["body"];
 
-  }else if(typeMessage == "interactive"){
+  } else if (typeMessage == "interactive") {
     var interactiveObject = messages["interactive"];
     var typeInteractive = interactiveObject["type"];
-    
 
-    if(typeInteractive == "button_reply"){
+
+    if (typeInteractive == "button_reply") {
       text = (interactiveObject["button_reply"])["title"];
-      
-    }else if(typeInteractive == "list_reply"){
+
+    } else if (typeInteractive == "list_reply") {
       text = (interactiveObject["list_reply"])["title"];
 
-    }else{
+    } else {
       myConsole.log("sin mensaje");
     }
-    
-  }else{
+
+  } else {
     myConsole.log("sin mensaje");
 
-  }return text;
+  } return text;
 }
 
 
