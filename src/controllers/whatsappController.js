@@ -24,8 +24,14 @@ const ReceivedMessage = (req, res) => {
     var changes= (entry["changes"])[0];
     var value=  changes["value"];
     var messageObject =  value["messages"];
-    
-    myConsole.log(messageObject);
+    if(typeof messageObject != "undefined"){
+
+      var messages = messageObject[0];
+      var text= GetTextUser(messages);
+      
+      myConsole.log(text);
+    }
+
     res.send("EVENT_RECEIVED");
     
   } catch (e) {
@@ -34,6 +40,34 @@ const ReceivedMessage = (req, res) => {
   }
 
 };
+
+function GetTextUser(messages){
+  var text ="";
+  var typeMessage =  messages["type"];
+  if(typeMessage == "text"){
+    text= (messages["text"])["body"];
+
+  }else if(typeMessage == "interactive"){
+    var interactiveObject = messages["interactive"];
+    var typeInteractive = interactiveObject["type"];
+    
+
+    if(typeInteractive == "button_reply"){
+      text = (interactiveObject["button_reply"])["title"];
+      
+    }else if(typeInteractive == "list_reply"){
+      text = (interactiveObject["list_reply"])["title"];
+
+    }else{
+      myConsole.log("sin mensaje");
+    }
+    
+  }else{
+    myConsole.log("sin mensaje");
+
+  }return text;
+}
+
 
 module.exports = {
   VerifyToken,
