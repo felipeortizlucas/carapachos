@@ -1,7 +1,7 @@
 const fs = require("fs");
 const myConsole = new console.Console(fs.createWriteStream("./logs.txt"));
-const whatsappService = require("../services/whatsappService");
-const samples = require("../shared/sampleModels");
+const processMessage = require("../shared/processMessage");
+
 
 const VerifyToken = (req, res) => {
   try {
@@ -32,42 +32,8 @@ const ReceivedMessage = (req, res) => {
       var text = GetTextUser(messages);
       myConsole.log(text);
 
-      if (text == "text") {
-        var data = samples.sampleText("hola usuario: ", number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else if (text == "image") {
-        var data = samples.sampleImage(number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else if (text == "video") {
-        var data = samples.sampleVideo(number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else if (text == "audio") {
-        var data = samples.sampleAudio(number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else if (text == "document") {
-        var data = samples.sampleDocument(number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else if (text == "button") {
-        var data = samples.sampleButtons(number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else if (text == "list") {
-        var data = samples.sampleList(number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else if (text == "location") {
-        var data = samples.sampleLocation(number);
-        whatsappService.sendMessageWhatsApp(data);
-      }
-      else {
-        var data = samples.sampleText(" No entiendo: ", number);
-        whatsappService.sendMessageWhatsApp(data);
-
+      if (text != "") {
+        processMessage.Process(text, number);
       }
     }
 
