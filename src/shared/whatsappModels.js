@@ -95,9 +95,24 @@ function MessageComprar(number) {
   });
   return data;
 }
+function MessageLocation(number) {
+  const data = JSON.stringify({
+    "messaging_product": "whatsapp",
+    "to": number,
+    "type": "location",
+    "location": {
+      "latitude": "1.8149839554031801",
+      "longitude": "-78.76433443216308",
+      "name": "Restaurante Carapachos",
+      "address": "Barrio Arciniegas, Avenida los estudiantes #Casa 183, Tumaco, San Andres de Tumaco, Nariño"
+    },
+  });
+  return data;
+}
 
 module.exports = {
   MessageText,
   MessageList,
-  MessageComprar
+  MessageComprar,
+  MessageLocation
 }

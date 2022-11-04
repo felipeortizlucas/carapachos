@@ -39,6 +39,16 @@ function Process(textUser, number) {
     var model = whatsappModel.MessageText("Registrate en el siguiente formulario para evaluarte: https://docs.google.com/forms/d/1gS9b4iWnb5bw_0K4dEftyf-J4P2rlqEymGBT9Z6y1a8/edit ", number);
     models.push(model);
   }
+  else if (textUser.includes("agencia")) {
+    //vender
+    var model = whatsappModel.MessageLocation(number);
+    models.push(model);
+  }
+  else if (textUser.includes("contacto")) {
+    //vender
+    var model = whatsappModel.MessageText("*contactanos al:* \n wa.me/573165786488", number);
+    models.push(model);
+  }
   else {
     //no entiendo
     var model = whatsappModel.MessageText("No entiendo tu solicitud", number);
