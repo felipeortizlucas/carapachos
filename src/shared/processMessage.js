@@ -9,11 +9,15 @@ function Process(textUser, number) {
     //Saludar
     var model = whatsappModel.MessageText("Hola, un placer en saludarte", number);
     models.push(model);
+    //Listado
+    var modelList = whatsappModel.MessageList(number);
+    models.push(modelList);
   }
   else if (textUser.includes("gracias")) {
     //agradecimiento
     var model = whatsappModel.MessageText("Gracias a usted por confiar en nosotros", number);
     models.push(model);
+
   }
   else if (textUser.includes("adios") ||
     textUser.includes("chao") ||
