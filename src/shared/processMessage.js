@@ -29,6 +29,16 @@ function Process(textUser, number) {
     var model = whatsappModel.MessageText("Que estes muy bien, hasta luego", number);
     models.push(model);
   }
+  else if (textUser.includes("comprar")) {
+    //comprar
+    var model = whatsappModel.MessageComprar(number);
+    models.push(model);
+  }
+  else if (textUser.includes("vender")) {
+    //vender
+    var model = whatsappModel.MessageText("Registrate en el siguiente formulario para evaluarte: https://docs.google.com/forms/d/1gS9b4iWnb5bw_0K4dEftyf-J4P2rlqEymGBT9Z6y1a8/edit ", number);
+    models.push(model);
+  }
   else {
     //no entiendo
     var model = whatsappModel.MessageText("No entiendo tu solicitud", number);
